@@ -1,6 +1,7 @@
 # Argo CD Application
 
-This repository contains Kubernetes files for deploying `myapp` with Argo CD.
+This repository contains Kubernetes files for deploying `myapp-argocd` with
+Argo CD.
 
 ## What is in this repository?
 
@@ -12,26 +13,34 @@ This repository contains Kubernetes files for deploying `myapp` with Argo CD.
     └── service.yaml
 ```
 
-`dev/deployment.yaml` runs two copies of the application. Each copy is a Pod
-using the `nanajanashia/argocd-app:1.2` image on port `8080`.
+`dev/deployment.yaml` creates the Deployment named `myapp-argocd`. It runs two
+copies of the application, each using the `nanajanashia/argocd-app:1.2` image
+on port `8080`.
 
-`dev/service.yaml` gives the Pods a stable name, `myapp-service`, and sends
-traffic on port `8080` to Pods with the label `app: myapp`.
+`dev/service.yaml` creates the Service named `myapp-service`. It sends traffic
+on port `8080` to Pods with the label `app: myapp`.
 
-`application.yaml` is the Argo CD instruction. It tells Argo CD to read the
-`dev` folder in this repository and deploy it to the `myapp` namespace.
+The Deployment gives its Pods the same `app: myapp` label, so the Service can
+find and send traffic to them. The Deployment name and the label do not need to
+be identical.
+
+`application.yaml` creates the Argo CD Application named
+`myapp-argo-application`. Argo CD reads the `dev` folder in this GitHub
+repository and deploys it to the `s12kunballi` namespace.
 
 ## Argo CD settings
 
-Argo CD watches this branch:
+Argo CD watches this GitHub repository and branch:
 
 ```text
+https://github.com/Marve-obas/argocd-app.git
 feature/branch-s12kunball-argocd-deploment
 ```
 
 Automatic sync is configured with:
 
-- `CreateNamespace=true`: create the `myapp` namespace if it does not exist.
+- `CreateNamespace=true`: create the `s12kunballi` namespace if it does not exist.
+- `enabled: true`: turn automatic sync on.
 - `selfHeal: true`: restore the Kubernetes configuration if someone changes it manually.
 - `prune: true`: delete Kubernetes objects removed from the Git configuration.
 
@@ -55,8 +64,8 @@ kubectl get applications -n argocd
 Check the deployed app resources:
 
 ```bash
-kubectl get pods -n myapp
-kubectl get service -n myapp
+kubectl get pods -n s12kunballi
+kubectl get service -n s12kunballi
 ```
 
 ## Save and push your work
