@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Marve-obas/argocd-app.git  
+    repoURL: https://github.com/Marve-obas/argocd-app.git
     targetRevision: feature/branch-s12kunball-argocd-deploment
     path: dev
   destination:
