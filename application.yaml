@@ -4,6 +4,7 @@ metadata:
   name: myapp-argo-application
   namespace: argocd
 spec:
+  type: ClusterIP
   project: default
   source:
     repoURL: https://github.com/Marve-obas/argocd-app.git  
